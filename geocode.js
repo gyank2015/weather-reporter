@@ -1,5 +1,6 @@
 const request = require('request');
 const moment =require('moment');
+const math =require('math');
 
 
 var geocodeAddress = (address,callback)=>{
@@ -27,11 +28,11 @@ request({
         var results ={
         Address: savedAddress,
         currentTime:moment(body.currently.time*1000).format("DD-MM-YYYY h:mm:ss"),
-        currentTemperature : JSON.stringify(body.currently.temperature)+'F',
-        apparentTemperature : JSON.stringify(body.currently.apparentTemperature)+'F',
+        currentTemperature : JSON.stringify(math.round((body.currently.temperature-32)*5/9),2)+'°C',
+        apparentTemperature : JSON.stringify(math.round((body.currently.apparentTemperature-32)*5/9),2)+'°C',
         weatherType: body.currently.summary,
-        humidity :JSON.stringify(body.currently.humidity*100)+'%',
-        windSpeed: JSON.stringify(body.currently.windSpeed)+'mph',
+        humidity :JSON.stringify(math.round(body.currently.humidity*100),2)+'%',
+        windSpeed: JSON.stringify(math.round(body.currently.windSpeed),2)+'mph',
         Prediction:body.daily.summary
       }
       callback(undefined ,results);
