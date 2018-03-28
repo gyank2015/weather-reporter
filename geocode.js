@@ -22,7 +22,14 @@ request({
       url: `https://api.darksky.net/forecast/f67ea4a28217b5aec90d9459c395322d/${JSON.stringify(body.results[0].geometry.location.lat)},${JSON.stringify(body.results[0].geometry.location.lng)}`,
       json :true
     },(error,response,body)=>{
-        var results =body.currently;
+      var results ={
+        Address: savedAddress,
+        currentTemperature : JSON.stringify(body.currently.temperature)+'F',
+        apparentTemperature : JSON.stringify(body.currently.apparentTemperature)+'F',
+        weatherType: body.currently.summary,
+        humidity :JSON.stringify(body.currently.humidity*100)+'%',
+        windSpeed: JSON.stringify(body.currently.windSpeed)+'mph'
+      }
       callback(undefined ,results);
     });
 
