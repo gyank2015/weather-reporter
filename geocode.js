@@ -23,11 +23,7 @@ request({
       url: `https://api.darksky.net/forecast/f67ea4a28217b5aec90d9459c395322d/${JSON.stringify(body.results[0].geometry.location.lat)},${JSON.stringify(body.results[0].geometry.location.lng)}`,
       json :true
     },(error,response,body)=>{
-      if(error)
-        callback('Unable to connect to Forecast Servers.',undefined);
-      else if(error==="The given location is invalid.")
-        callback('The given location is invalid.',undefined);
-      else{
+      if(!error&&response.statusCode===200){
         var results ={
         Address: savedAddress,
         currentTime:moment(body.currently.time*1000).format("DD-MM-YYYY h:mm:ss"),
@@ -40,6 +36,8 @@ request({
       }
       callback(undefined ,results);
     }
+    else
+      callback('Unable to fetch weather.',undefined);
   });
 
     // console.log(`Address: ${JSON.stringify(body.results[0].formatted_address)}.`);
